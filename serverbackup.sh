@@ -82,13 +82,14 @@ if [ "$Where" = "HDD" ] || [ "$Where" = "Tape&HDD" ]; then
 	if [ $? -ne 0 ]; then
 		echo "$CurTime Couldn't mount $ExtHDD on ${MntPoint}, aborting"\
 			> /dev/stderr
+		exit 2
 	fi
 
 	if [ ! -d "${MntPoint}/${ExtHDDdir}" ]; then
 		printf "$CurTime ${MntPoint}/${ExtHDDdir} dosen't exist" \
 			> /dev/stderr
 		printf ", aborting\n" > /dev/stderr
-	exit 2
+		exit 2
 	fi
 fi
 
