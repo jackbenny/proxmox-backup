@@ -6,7 +6,7 @@
 
 ## Variables ##
 # Define some settings for the script
-BackupDir="dummyfiles" # This is were Proxmos places it's backup files
+BackupDir="dummyfiles" # This is were Proxmox places it's backup files
 TapeDev="/dev/st0" # The device for your Tape drive
 ExtHDD="/dev/sdd1" # The external harddrive
 MntPoint="/mnt" # Where to mount the external harddrive
@@ -105,7 +105,13 @@ if [ "$Where" = "HDD" ] || [ "$Where" = "Tape&HDD" ]; then
 	#$Ls vzdump-*-${VMs}-${Latest}*              # and debugging
 
 	# Create a separate directory for each backup and copy the files
+	if [ -d ${MntPoint}/${ExtHDDdir}/${Latest} ]; then
+		printf "${MntPoint}/${ExtHDDdir}/${Latest} already exist, "
+		printf "aborting\n" > /dev/stderr
+		exit 2
+	fi
 	$Mkdir ${MntPoint}/${ExtHDDdir}/${Latest}
+	echo "Copying files to $ExtHDD"
 	$Cp -v vzdump-*-${VMs}-${Latest}* ${MntPoint}/${ExtHDDdir}/${Latest}	
 
 	if [ $? -ne 0 ]; then
@@ -124,6 +130,8 @@ fi
 if [ "$Where" = "Tape" ] || [ "$Where" = "Tape&HDD" ]; then
 	#echo "Backup to tape drive $TapeDev"      # Uncomment for testing
 	#$Ls vzdump-*-${VMs}-${Latest}*            # and debugging
+	echo ""
+	echo "Writing tape backup"
 	tar cvf $TapeDev vzdump-*-${VMs}-${Latest}*
 
 	if [ $? -ne 0 ]; then
