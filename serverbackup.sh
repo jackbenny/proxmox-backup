@@ -26,6 +26,7 @@ Mount="/bin/mount"
 Umount="/bin/umount"
 Mt="/bin/mt"
 Cp="/bin/cp"
+Mkdir="/bin/mkdir"
 
 # Get current date & time for markers etc
 CurTime=`date "+%F %X ->"`
@@ -38,7 +39,7 @@ if [ $EUID -ne 0 ]; then
 fi
 
 # Check out binaries
-for i in $Ls $Tar $Sort $Tail $Uniq $Mount $Umount $Mt $Cp; do
+for i in $Ls $Tar $Sort $Tail $Uniq $Mount $Umount $Mt $Cp $Mkdir; do
 	test -x $i
 	if [ $? -ne 0 ]; then
 		echo "$CurTime Can't execute $i, aborting!" > /dev/stderr
@@ -54,7 +55,7 @@ if [ "$Where" = "Tape" ] || [ "$Where" = "Tape&HDD" ]; then
 	fi
 	
 	${Mt} -f ${TapeDev} status | grep DR_OPEN &> /dev/null
-  	if [ $? -eq 0 ]; then
+ 	if [ $? -eq 0 ]; then
 		echo "$CurTime No tape in tape drive $TapeDev" > /dev/stderr
 		exit 2
 	fi
