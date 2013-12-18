@@ -7,7 +7,7 @@
 ## Variables ##
 # Define some settings for the script
 BackupDir="dummyfiles" # This is were Proxmos places it's backup files
-TapeDev="/dev/sda1" # The device for your Tape drive
+TapeDev="/dev/st0" # The device for your Tape drive
 ExtHDD="/dev/sdd1" # The external harddrive
 MntPoint="/mnt" # Where to mount the external harddrive
 ExtHDDdir="Nebula_backups" # Where to put the backup files on the ext. drive
@@ -25,6 +25,7 @@ Uniq="/usr/bin/uniq"
 Mount="/bin/mount"
 Umount="/bin/umount"
 Mt="/bin/mt"
+Cp="/bin/cp"
 
 # Get current date & time for markers etc
 CurTime=`date "+%F %X ->"`
@@ -37,7 +38,7 @@ if [ $EUID -ne 0 ]; then
 fi
 
 # Check out binaries
-for i in $Ls $Tar $Sort $Tail $Uniq $Mount $Umount $Mt; do
+for i in $Ls $Tar $Sort $Tail $Uniq $Mount $Umount $Mt $Cp; do
 	test -x $i
 	if [ $? -ne 0 ]; then
 		echo "$CurTime Can't execute $i, aborting!" > /dev/stderr
@@ -99,8 +100,12 @@ Latest=`echo "$Dates" | sort | uniq | tail -n1`
 
 # Start the actual backup/copy of files
 if [ "$Where" = "HDD" ] || [ "$Where" = "Tape&HDD" ]; then
-	echo "Backup to external harddrive $ExtHDD" # Uncomment for testing
-	$Ls vzdump-*-${VMs}-${Latest}*              # and debugging
+	#echo "Backup to external harddrive $ExtHDD" # Uncomment for testing
+	#$Ls vzdump-*-${VMs}-${Latest}*              # and debugging
+
+	# Create a separate directory for each backup and copy the files
+	$Mkdir ${MntPoint}/${ExtHDDdir}/${Latest}
+	$Cp -v vzdump-*-${VMs}-${Latest}* ${MntPoint}/${ExtHDDdir}/${Latest}	
 
 	if [ $? -ne 0 ]; then
 		echo "Something went wrong with backuping up to $ExtHDD"
@@ -115,11 +120,15 @@ if [ "$Where" = "HDD" ] || [ "$Where" = "Tape&HDD" ]; then
 	fi
 fi
 
-if [ "$Where" = "HDD" ] || [ "$Where" = "Tape&HDD" ]; then
-	echo "Backup to tape drive $TapeDev"      # Uncomment for testing
-	$Ls vzdump-*-${VMs}-${Latest}*            # and debugging
+if [ "$Where" = "Tape" ] || [ "$Where" = "Tape&HDD" ]; then
+	#echo "Backup to tape drive $TapeDev"      # Uncomment for testing
+	#$Ls vzdump-*-${VMs}-${Latest}*            # and debugging
+	tar cvf $TapeDev vzdump-*-${VMs}-${Latest}*
+
 	if [ $? -ne 0 ]; then
 		echo "Something went wrong when backing up to tape drive" \
 			> /dev/stderr
 	fi
 fi
+
+exit 0
