@@ -34,3 +34,17 @@ For example you can it like this:
 ```bash
 ./serverbackup.sh > backupmessages.log 2> backuperrors.log
 ```
+
+### Taperotate ###
+This is just a small complementary script to serverbackup.sh. The script keep
+track on which tape you last used for your backup so you'll know which tape
+to use next. Either you can run the script by itself or include it on the same
+line as serverbackup such as `./serverbackup.sh && ./taperotate.sh`. Each time
+taperotate is run a new line is printed in the tapefile.txt file which contains
+the tape used. The next time the script is run it automatically increases the tape
+number by one.
+
+The first time you run taperotate.sh you'll have to initialize it with the -i N
+option where N is the tape you start with. If you change the order of the tapes
+later on you can use the -i option again to start over with tape N (the old lines
+will be kept though to keep track on the old backups).
