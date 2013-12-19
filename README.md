@@ -27,3 +27,10 @@ on your tape device.
 You can place your script wherever you on your system. When the script runs it
 will cd into your Proxmox backups files and perform it's action from there.
 
+All error messages are printed to STDERR and all normal messages are printed to
+STDOUT. Because of this you can run this script headless and save the output
+in separate logfiles depending on whatever it's an error or normal messages.
+For example you can it like this:
+```bash
+./serverbackup.sh > backupmessages.log 2> backuperrors.log
+```
