@@ -27,5 +27,3 @@ on your tape device.
 You can place your script wherever you on your system. When the script runs it
 will cd into your Proxmox backups files and perform it's action from there.
 
-
-
