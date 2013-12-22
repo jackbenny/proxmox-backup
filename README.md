@@ -2,7 +2,7 @@
 This is exercise 6 on lab 5 which is about writing a backup script for your 
 server.
 For this exercise I've chosen to make a backup script for Proxmox, ie take all 
-the backup files (vzdump-openvz-111-2013i\_11\_19-08\_20\_20.tar.lzo and so on) 
+the backup files (vzdump-openvz-111-2013\_11\_19-08\_20\_20.tar.lzo and so on) 
 and copy them to a tape device and an external harddrive.
 
 ## Short introduction on usage ##
@@ -30,7 +30,7 @@ will cd into your Proxmox backups files and perform it's action from there.
 All error messages are printed to STDERR and all normal messages are printed to
 STDOUT. Because of this you can run this script headless and save the output
 in separate logfiles depending on whatever it's an error or normal messages.
-For example you can it like this:
+For example you can run it like this:
 ```bash
 ./serverbackup.sh > backupmessages.log 2> backuperrors.log
 ```
