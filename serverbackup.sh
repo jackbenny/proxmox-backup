@@ -47,9 +47,15 @@ for i in $Ls $Tar $Sort $Tail $Uniq $Mount $Umount $Mt $Cp $Mkdir; do
 	fi
 done
 
+# Check that BackupDir exists
+if [ ! -d $BackupDir ]; then
+	echo "$BackupDir dosen't seem to exist, aborting" > /dev/stderr
+	exit 2
+fi
+
 # Check that our tape drive is on and connected and a tape is inserted
 if [ "$Where" = "Tape" ] || [ "$Where" = "Tape&HDD" ]; then
-	if [ ! -b $TapeDev ]; then
+	if [ ! -e $TapeDev ]; then
 		echo "$CurTime No tape device present at $TapeDev" > /dev/stderr
 		exit 2
 	fi
