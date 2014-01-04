@@ -1,4 +1,4 @@
-# Serverbackup #
+# Proxmox-backup #
 This script was written as a part of a Programming & Scripting class.
 The script takes a backup of the backup files created by Proxmox, ie take all 
 the backup files (vzdump-openvz-111-2013\_11\_19-08\_20\_20.tar.lzo and so on) 
