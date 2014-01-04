@@ -1,7 +1,6 @@
 # Serverbackup #
-This is exercise 6 on lab 5 which is about writing a backup script for your 
-server.
-For this exercise I've chosen to make a backup script for Proxmox, ie take all 
+This script was written as a part of a Programming & Scripting class.
+The script takes a backup of the backup files created by Proxmox, ie take all 
 the backup files (vzdump-openvz-111-2013\_11\_19-08\_20\_20.tar.lzo and so on) 
 and copy them to a tape device and an external harddrive.
 
@@ -41,10 +40,18 @@ track on which tape you last used for your backup so you'll know which tape
 to use next. Either you can run the script by itself or include it on the same
 line as serverbackup such as `./serverbackup.sh && ./taperotate.sh`. Each time
 taperotate is run a new line is printed in the tapefile.txt file which contains
-the tape used. The next time the script is run it automatically increases the tape
-number by one.
+the tape used. The next time the script is run it automatically increases the 
+tape number by one.
 
 The first time you run taperotate.sh you'll have to initialize it with the -i N
 option where N is the tape you start with. If you change the order of the tapes
-later on you can use the -i option again to start over with tape N (the old lines
-will be kept though to keep track on the old backups).
+later on you can use the -i option again to start over with tape N (the old
+lines will be kept though to keep track on the old backups).
+
+### Flowchart, specs and notes ###
+You can ignore these files as they are just a part of the inital lab/exercise
+for the class and for my own memory.
+
+### Dummyfiles ###
+These are some dummy backup files to test the script on. They have the same
+format as the real Proxmox created files.
